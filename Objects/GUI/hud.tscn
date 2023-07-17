@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://dqnj8u80h55w1"]
+
+[ext_resource type="Script" path="res://Scripts/hud.gd" id="1_oaamd"]
+[ext_resource type="PackedScene" uid="uid://cf2xp4lt8m1lm" path="res://Objects/GUI/bases/bar_nine_path.tscn" id="1_y4v1u"]
+
+[node name="HUD" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_right = 3.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_oaamd")
+
+[node name="BarNinePath" parent="." instance=ExtResource("1_y4v1u")]
+layout_mode = 1
+offset_left = -3.0
+offset_right = 82.0
+
+[connection signal="health_changed" from="." to="BarNinePath" method="_on_hud_health_changed"]
+[connection signal="max_xp_changed" from="." to="BarNinePath" method="_on_hud_max_xp_changed"]
+[connection signal="xp_changed" from="." to="BarNinePath" method="_on_hud_xp_changed"]

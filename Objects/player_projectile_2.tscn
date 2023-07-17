@@ -1,0 +1,101 @@
+[gd_scene load_steps=11 format=3 uid="uid://c78cm3nd1sbhp"]
+
+[ext_resource type="Script" path="res://Objects/particleConfig.gd" id="3_0f7m2"]
+[ext_resource type="Script" path="res://Objects/playerProjectileHitbox.gd" id="4_sutba"]
+
+[sub_resource type="GDScript" id="GDScript_qmk6m"]
+script/source = "extends RigidBody3D
+
+signal enemy_hit
+@onready var particles = $GPUParticles3D
+
+var behaviour = int()
+var direction = Vector3()
+@export var damage = 1
+
+@export var speed = 8
+@export_color_no_alpha var color = Color()
+
+	
+func _process(delta):
+	translate(direction.normalized() * speed * delta)
+
+func _on_visible_on_screen_enabler_3d_screen_exited():
+	queue_free()
+
+func _on_area_3d_body_entered(body):
+	if body.is_in_group(\"Enemies\"):
+		emit_signal(\"enemy_hit\")
+"
+
+[sub_resource type="Curve" id="Curve_6rhdg"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.47479, 1), -2.78363, -2.78363, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_2lpvi"]
+curve = SubResource("Curve_6rhdg")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ooa80"]
+emission_shape = 1
+emission_sphere_radius = 0.7
+gravity = Vector3(0, 0, 0)
+scale_curve = SubResource("CurveTexture_2lpvi")
+color = Color(0.396078, 0, 0.0235294, 1)
+hue_variation_min = -0.25
+hue_variation_max = 0.25
+turbulence_enabled = true
+turbulence_noise_strength = 9.85
+turbulence_noise_scale = 5.26
+collision_mode = 2
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_a4ta6"]
+load_path = "res://.godot/imported/swordBeam.png-32ec59a293cf1fce30344dbd19af3026.s3tc.ctex"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8ymi4"]
+transparency = 1
+vertex_color_use_as_albedo = true
+albedo_texture = SubResource("CompressedTexture2D_a4ta6")
+albedo_texture_force_srgb = true
+emission_enabled = true
+emission = Color(0.941176, 0.482353, 0.196078, 1)
+emission_energy_multiplier = 1.36
+texture_filter = 0
+billboard_mode = 2
+billboard_keep_scale = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_pwpsd"]
+material = SubResource("StandardMaterial3D_8ymi4")
+size = Vector2(1, 1)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_i3pg1"]
+
+[node name="playerProjectile2" type="RigidBody3D"]
+collision_layer = 0
+collision_mask = 0
+script = SubResource("GDScript_qmk6m")
+damage = 3
+color = Color(0.713726, 0.192157, 0.0901961, 1)
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 0, 0, 0)
+lifetime = 0.3
+randomness = 0.5
+trail_lifetime = 2.0
+process_material = SubResource("ParticleProcessMaterial_ooa80")
+draw_pass_1 = SubResource("PlaneMesh_pwpsd")
+script = ExtResource("3_0f7m2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_i3pg1")
+
+[node name="Area3D" type="Area3D" parent="." groups=["PlayerAttack"]]
+collision_layer = 16
+collision_mask = 16
+script = ExtResource("4_sutba")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_i3pg1")
+
+[node name="VisibleOnScreenEnabler3D" type="VisibleOnScreenEnabler3D" parent="."]
+
+[connection signal="screen_exited" from="VisibleOnScreenEnabler3D" to="." method="_on_visible_on_screen_enabler_3d_screen_exited" flags=18]

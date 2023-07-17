@@ -1,0 +1,74 @@
+[gd_scene load_steps=11 format=3 uid="uid://cf2xp4lt8m1lm"]
+
+[ext_resource type="Texture2D" uid="uid://x4wfge3q5i2h" path="res://Objects/GUI/9path.png" id="1_n3kpc"]
+[ext_resource type="Texture2D" uid="uid://dx77hgbe5grea" path="res://Objects/GUI/HpUnder.png" id="2_cqxcc"]
+[ext_resource type="Script" path="res://Scripts/hud_bars.gd" id="2_ijj6x"]
+[ext_resource type="Texture2D" uid="uid://bpllce7b7mokv" path="res://Objects/GUI/hp_icon.png" id="3_ou6cu"]
+[ext_resource type="Texture2D" uid="uid://bsqn3ahk8xw0s" path="res://Objects/GUI/HpOver.png" id="3_q58y8"]
+[ext_resource type="Texture2D" uid="uid://h5xeqg1xyq82" path="res://Objects/GUI/xp_icon.png" id="4_0uhia"]
+[ext_resource type="Texture2D" uid="uid://dg7s3tln1e87q" path="res://Objects/GUI/HpContent.png" id="4_fs7nl"]
+[ext_resource type="Texture2D" uid="uid://bhj2tx45qgnb4" path="res://Objects/GUI/XpUnder.png" id="5_xw1iw"]
+[ext_resource type="Texture2D" uid="uid://bjt2dyu6w4vh0" path="res://Objects/GUI/XpOver.png" id="6_hpkf4"]
+[ext_resource type="Texture2D" uid="uid://dyuxyfp56g0ww" path="res://Objects/GUI/XpContent.png" id="7_5ehrx"]
+
+[node name="BarNinePath" type="NinePatchRect"]
+texture_filter = 1
+offset_right = 83.0
+offset_bottom = 30.0
+texture = ExtResource("1_n3kpc")
+patch_margin_left = 3
+patch_margin_top = 3
+patch_margin_right = 3
+patch_margin_bottom = 3
+script = ExtResource("2_ijj6x")
+
+[node name="HPicon" type="TextureRect" parent="."]
+z_index = 1
+layout_mode = 1
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 15.0
+offset_bottom = 14.0
+texture = ExtResource("3_ou6cu")
+stretch_mode = 2
+
+[node name="XPicon" type="TextureRect" parent="."]
+z_index = 1
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = -15.0
+offset_right = 15.0
+offset_bottom = -2.0
+grow_vertical = 0
+texture = ExtResource("4_0uhia")
+stretch_mode = 2
+
+[node name="HpBar" type="TextureProgressBar" parent="."]
+layout_mode = 2
+offset_left = 11.0
+offset_top = 3.0
+offset_right = 81.0
+offset_bottom = 15.0
+size_flags_horizontal = 0
+value = 50.0
+texture_under = ExtResource("2_cqxcc")
+texture_over = ExtResource("3_q58y8")
+texture_progress = ExtResource("4_fs7nl")
+
+[node name="XpBar" type="TextureProgressBar" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 14.0
+offset_top = -14.0
+offset_right = 66.0
+offset_bottom = -3.0
+grow_vertical = 0
+value = 75.0
+texture_under = ExtResource("5_xw1iw")
+texture_over = ExtResource("6_hpkf4")
+texture_progress = ExtResource("7_5ehrx")

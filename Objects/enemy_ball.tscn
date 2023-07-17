@@ -1,0 +1,137 @@
+[gd_scene load_steps=12 format=3 uid="uid://0btn7xgs3abb"]
+
+[ext_resource type="Script" path="res://Scripts/enemy_basicAi2.gd" id="1_oajrr"]
+[ext_resource type="PackedScene" uid="uid://bm5in1o5d1xbk" path="res://Objects/components/enemy_health_component.tscn" id="2_5oad8"]
+[ext_resource type="Texture2D" uid="uid://dvkuq0raqgdrg" path="res://Resources/Sprites/ball.png" id="3_ikfx2"]
+[ext_resource type="Script" path="res://Scripts/enemy_collisions.gd" id="4_6u4p4"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_6oak4"]
+radius = 0.4
+height = 1.2
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_vvqmk"]
+data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
+
+[sub_resource type="Animation" id="Animation_2eo83"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+
+[sub_resource type="Animation" id="Animation_tmv7g"]
+resource_name = "walk_up"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5]
+}
+
+[sub_resource type="Animation" id="Animation_nqt8h"]
+resource_name = "walk_up"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [6, 7, 8, 9, 10, 11]
+}
+
+[sub_resource type="Animation" id="Animation_r6tqx"]
+resource_name = "walk_up"
+length = 0.6
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite3D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [12, 13, 14, 15, 16, 17]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_oo6h7"]
+_data = {
+"RESET": SubResource("Animation_2eo83"),
+"walk_down": SubResource("Animation_tmv7g"),
+"walk_side": SubResource("Animation_nqt8h"),
+"walk_up": SubResource("Animation_r6tqx")
+}
+
+[node name="enemy_ball" type="CharacterBody3D" node_paths=PackedStringArray("target") groups=["Enemies"]]
+collision_layer = 2
+script = ExtResource("1_oajrr")
+target = NodePath("enemyHealthComponent")
+
+[node name="enemyHealthComponent" parent="." instance=ExtResource("2_5oad8")]
+max_hp = 6
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+path_desired_distance = 0.75
+avoidance_enabled = true
+
+[node name="NavigationObstacle3D" type="NavigationObstacle3D" parent="."]
+use_3d_avoidance = true
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(6.2, 0, 0, 0, 6.2, 0, 0, 0, 6.2, 0, 0, 0)
+billboard = 1
+shaded = true
+texture_filter = 0
+texture = ExtResource("3_ikfx2")
+hframes = 6
+vframes = 3
+frame = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_6oak4")
+
+[node name="enemyCollisions" type="Area3D" parent="." node_paths=PackedStringArray("enemy_health")]
+visible = false
+collision_layer = 2
+collision_mask = 19
+script = ExtResource("4_6u4p4")
+enemy_health = NodePath("../enemyHealthComponent")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="enemyCollisions"]
+shape = SubResource("ConcavePolygonShape3D_vvqmk")
+
+[node name="knockbackCooldown" type="Timer" parent="."]
+wait_time = 0.075
+
+[node name="SpriteBallAnimation" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_oo6h7")
+}
+
+[connection signal="area_entered" from="enemyCollisions" to="enemyCollisions" method="_on_area_entered" flags=18]
+[connection signal="body_entered" from="enemyCollisions" to="enemyCollisions" method="_on_body_entered" flags=18]
+[connection signal="timeout" from="knockbackCooldown" to="." method="_on_knockback_cooldown_timeout" flags=18]
